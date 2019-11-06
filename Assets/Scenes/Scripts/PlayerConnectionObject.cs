@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 public class PlayerConnectionObject : NetworkBehaviour
 {
     // Start is called before the first frame update
+    
     void Start()
     {
         if(!isLocalPlayer){
@@ -14,10 +15,13 @@ public class PlayerConnectionObject : NetworkBehaviour
 
         //Instantiate(PlayerUnitPrefab);
         CmdSpawnMyUnit();
+        //NetworkManager.serverBindAddress = "";
+        //NetworkManager.singleton.networkPort = int.Parse(Port);
+        //NetworkManager.singleton.StartHost();
     }
-
+    public string Port="Teste";
     public GameObject PlayerUnitPrefab;
-
+    public NetworkManager manager;
     [SyncVar(hook="OnPlayerNameChanged")]
 
     public string PlayerName = "Anonymous";
