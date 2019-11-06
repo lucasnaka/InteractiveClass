@@ -5,9 +5,8 @@ namespace CustomHud
 {
     public class CustomHud : MonoBehaviour
     {
-        private string IpAddress = "192.168.1.61";
+        private string IpAddress = "localhost";
         private string Port = "7777";
-        private string teste = "7777";
         public float GuiOffset;
         private bool _started;
 
