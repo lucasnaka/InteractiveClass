@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExtinguishFire : MonoBehaviour
+public class GravityRay : MonoBehaviour
 {
-    public ParticleSystem alpha;
+    // --------------------------------------------------------------------------------------------------------
+    /* public ParticleSystem alpha;
     public ParticleSystem add;
     public ParticleSystem glow;
     public ParticleSystem sparks;
@@ -47,19 +48,17 @@ public class ExtinguishFire : MonoBehaviour
         sparks_main.rate = 0;
     }
 
-    int reachRange = 100;
- 
     float waitTime = 3.0f;
     float timeStamp = Mathf.Infinity;
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetKeyDown("space"))
         {
             timeStamp = Time.time + waitTime;
         }
 
-        if(Input.GetMouseButtonUp(0))
+        if(Input.GetKeyUp("space"))
         {
             timeStamp = Mathf.Infinity;
         }
@@ -85,5 +84,62 @@ public class ExtinguishFire : MonoBehaviour
             else
                 DiminuirIncendio();
         }
+    }*/
+
+    // --------------------------------------------------------------------------------------------------------
+
+    private Rigidbody target;
+    int reachRange = 100;
+    private bool isActive = false;
+    public GameObject mao_direita;
+
+    void Start() {
+        
+    }
+
+    private void Attract() {
+        target.isKinematic = true; // desativa a fisica
+        target.MovePosition(transform.position + transform.forward);
+    }
+
+    public void RaybeamStop()
+    {
+        isActive = false;
+        target = null;
+    }
+
+    public void RaybeamStart()
+    {
+        RaycastHit hitInfo;
+        if(Physics.Raycast (transform.position, transform.forward, out hitInfo, reachRange)) {
+            Debug.DrawRay (transform.position, transform.forward * hitInfo.distance, Color.green);
+           /*  if(hitInfo.collider.attachedRigidbody != null){
+                target = hitInfo.collider.attachedRigidbody;
+                isActive = true;
+            } */
+            if(hitInfo.collider.gameObject.name == "Extintor1"){
+                print("acertou o extintor");
+                //hitInfo.collider.gameObject.GetComponent<Rigidbody>().isKinematic  = false;
+                hitInfo.collider.gameObject.transform.parent = mao_direita.transform;
+                hitInfo.collider.gameObject.transform.localPosition = new Vector3(0,0,0);
+                //target = hitInfo.collider.attachedRigidbody;
+                isActive = true;
+            }
+        }
+    }
+
+    void Update(){
+        if(Input.GetKeyDown("space")){
+            if(mao_direita == null)
+                mao_direita = GameObject.FindGameObjectWithTag("mao_direita");
+            print(mao_direita);
+            RaybeamStart();
+        }
+        if(Input.GetKeyUp("space")){
+            RaybeamStop();
+        }
+        /* if(isActive){
+            Attract();
+        } */
     }
 }

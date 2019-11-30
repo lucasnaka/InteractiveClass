@@ -1,16 +1,14 @@
 fileFormatVersion: 2
-guid: 4b973b37b04111c479a981701a3075b3
+guid: da9f34bb69150534b9546f4bf4eafb76
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: 20289_Keypad_knob_entry_v1
-    100002: //RootNode
-    400000: 20289_Keypad_knob_entry_v1
-    400002: //RootNode
-    2100000: 20289_Keypad_knob_entry_v1Mat
-    2300000: 20289_Keypad_knob_entry_v1
-    3300000: 20289_Keypad_knob_entry_v1
-    4300000: 20289_Keypad_knob_entry_v1
+    100000: //RootNode
+    400000: //RootNode
+    2100000: crowbar
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: crowbar
   externalObjects: {}
   materials:
     importMaterials: 1

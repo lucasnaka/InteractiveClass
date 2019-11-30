@@ -28,20 +28,21 @@ public class Movement : NetworkBehaviour
         {
             return;
         }
-        camera.transform.position = new Vector3(transform.position.x, transform.position.y+1.1f, transform.position.z); 
+        camera.transform.position = new Vector3(transform.position.x, transform.position.y+1.2f, transform.position.z); 
         camera.transform.rotation = transform.rotation;
         Vector3 pos = transform.position;
         m_Animator.SetFloat("walk", 0);
         if (Input.GetKey("w"))
         {
             m_Animator.SetFloat("walk", 1);
-
+            //transform.position += camera.transform.forward * speed * Time.deltaTime;
             pos.z += speed * Time.deltaTime;
         }
         if (Input.GetKey("s"))
         {
             m_Animator.SetFloat("walk", 1);
 
+            //transform.position -= camera.transform.forward * speed * Time.deltaTime;
             pos.z -= speed * Time.deltaTime;
         }
         if (Input.GetKey("d"))
