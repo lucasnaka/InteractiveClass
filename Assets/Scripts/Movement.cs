@@ -35,27 +35,25 @@ public class Movement : NetworkBehaviour
         if (Input.GetKey("w"))
         {
             m_Animator.SetFloat("walk", 1);
-            //transform.position += camera.transform.forward * speed * Time.deltaTime;
-            pos.z += speed * Time.deltaTime;
+            pos += camera.transform.forward * speed * Time.deltaTime;
         }
         if (Input.GetKey("s"))
         {
             m_Animator.SetFloat("walk", 1);
 
-            //transform.position -= camera.transform.forward * speed * Time.deltaTime;
-            pos.z -= speed * Time.deltaTime;
+            pos -= camera.transform.forward * speed * Time.deltaTime;
         }
         if (Input.GetKey("d"))
         {
             m_Animator.SetFloat("walk", 1);
 
-            pos.x += speed * Time.deltaTime;
+            pos += camera.transform.right * speed * Time.deltaTime;
         }
         if (Input.GetKey("a"))
         {
             m_Animator.SetFloat("walk", 1);
 
-            pos.x -= speed * Time.deltaTime;
+            pos -= camera.transform.right * speed * Time.deltaTime;
         }
         float right = 0.0f;
         float currentSpeed = speed;

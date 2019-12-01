@@ -49,25 +49,40 @@ public class ExtinguishFire : MonoBehaviour
 
     int reachRange = 100;
  
-    float waitTime = 3.0f;
-    float timeStamp = Mathf.Infinity;
+    float waitTime = 4.0f;
+    float timeStamp = 0.0f;
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (RayDetectFire() && GravityRay.com_extintor1 && GravityRay.com_extintor2)
         {
-            timeStamp = Time.time + waitTime;
+            timeStamp += Time.deltaTime;
         }
 
-        if(Input.GetMouseButtonUp(0))
+        if (!RayDetectFire() || !GravityRay.com_extintor1 || !GravityRay.com_extintor2)
         {
-            timeStamp = Mathf.Infinity;
+            timeStamp = 0;
         }
 
-        if (Time.time >= timeStamp) {
+        if (timeStamp >= waitTime)
+        {
             CheckMouseClick();
-            timeStamp = Time.time + waitTime;
+            timeStamp = 0;
         }
+    }
+
+    public bool RayDetectFire()
+    {
+        RaycastHit hitInfo;
+        if (Physics.Raycast(transform.position, transform.forward, out hitInfo, reachRange))
+        {
+            //Debug.DrawRay(transform.position, transform.forward * hitInfo.distance, Color.green);
+            if (hitInfo.collider.gameObject.name == "PS_Parent")
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     int finishFire = 0;

@@ -16,9 +16,10 @@ public class ColliderFireExtinguisher : MonoBehaviour
         
     }
 
-    void OnTriggerStay(Collider collision){
+    void OnTriggerEnter(Collider collider)
+    {
         print("sjvbhahuvihbklj");
-        if(collision.gameObject.name == "Extintor1"){
+        if(collider.gameObject.name == "Gun"){
             print("----------- colidiram ---------");
         }
     }

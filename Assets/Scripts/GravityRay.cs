@@ -88,58 +88,60 @@ public class GravityRay : MonoBehaviour
 
     // --------------------------------------------------------------------------------------------------------
 
-    private Rigidbody target;
     int reachRange = 100;
-    private bool isActive = false;
     public GameObject mao_direita;
 
     void Start() {
         
     }
 
-    private void Attract() {
-        target.isKinematic = true; // desativa a fisica
-        target.MovePosition(transform.position + transform.forward);
-    }
-
-    public void RaybeamStop()
-    {
-        isActive = false;
-        target = null;
-    }
+    public static bool com_extintor1 = false;
+    public static bool com_extintor2 = false;
 
     public void RaybeamStart()
     {
         RaycastHit hitInfo;
         if(Physics.Raycast (transform.position, transform.forward, out hitInfo, reachRange)) {
-            Debug.DrawRay (transform.position, transform.forward * hitInfo.distance, Color.green);
-           /*  if(hitInfo.collider.attachedRigidbody != null){
-                target = hitInfo.collider.attachedRigidbody;
-                isActive = true;
-            } */
-            if(hitInfo.collider.gameObject.name == "Extintor1"){
-                print("acertou o extintor");
+            //Debug.DrawRay (transform.position, transform.forward * hitInfo.distance, Color.green);
+            if(hitInfo.collider.gameObject.name == "Extintor1" && !com_extintor2)
+            {
                 //hitInfo.collider.gameObject.GetComponent<Rigidbody>().isKinematic  = false;
                 hitInfo.collider.gameObject.transform.parent = mao_direita.transform;
                 hitInfo.collider.gameObject.transform.localPosition = new Vector3(0,0,0);
-                //target = hitInfo.collider.attachedRigidbody;
-                isActive = true;
+                com_extintor1 = true;
+            }
+
+            if (hitInfo.collider.gameObject.name == "Extintor2" && !com_extintor1)
+            {
+                //hitInfo.collider.gameObject.GetComponent<Rigidbody>().isKinematic  = false;
+                hitInfo.collider.gameObject.transform.parent = mao_direita.transform;
+                hitInfo.collider.gameObject.transform.localPosition = new Vector3(0, 0, 0);
+                com_extintor2 = true;
             }
         }
     }
+
+    public GameObject extintor1;
+    public GameObject extintor2;
 
     void Update(){
         if(Input.GetKeyDown("space")){
             if(mao_direita == null)
                 mao_direita = GameObject.FindGameObjectWithTag("mao_direita");
-            print(mao_direita);
-            RaybeamStart();
+            if(!com_extintor1 && !com_extintor2)
+                RaybeamStart();
+            else if(com_extintor1)
+            {
+                extintor1 = GameObject.Find("Extintor1");
+                com_extintor1 = false;
+                extintor1.transform.parent = null;
+            }
+            else if (com_extintor2)
+            {
+                extintor2 = GameObject.Find("Extintor2");
+                com_extintor2 = false;
+                extintor2.transform.parent = null;
+            }
         }
-        if(Input.GetKeyUp("space")){
-            RaybeamStop();
-        }
-        /* if(isActive){
-            Attract();
-        } */
     }
 }
