@@ -54,12 +54,12 @@ public class ExtinguishFire : MonoBehaviour
 
     void Update()
     {
-        if (RayDetectFire() && GravityRay.com_extintor1 && GravityRay.com_extintor2)
+        if (RayDetectFire() && GravityRay.com_extintor1)
         {
             timeStamp += Time.deltaTime;
         }
 
-        if (!RayDetectFire() || !GravityRay.com_extintor1 || !GravityRay.com_extintor2)
+        if (!RayDetectFire() || !GravityRay.com_extintor1)
         {
             timeStamp = 0;
         }

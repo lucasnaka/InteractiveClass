@@ -17,11 +17,6 @@ public class GravityRay : MonoBehaviour
         objectsToCatch.Add("crowbarOld2", false);
     }
 
-    public static bool com_extintor1 = false;
-    public static bool com_extintor2 = false;
-
-    string[] objectsNames = new string[5]{"Extintor1", "Extintor2", "ChestKey", "crowbarOld1", "crowbarOld2" };
-
     public void RaybeamStart()
     {
         RaycastHit hitInfo;
@@ -36,6 +31,11 @@ public class GravityRay : MonoBehaviour
     }
 
     public GameObject objectCaught;
+    public static bool com_extintor1 = false;
+    public static bool com_extintor2 = false; 
+    public static bool com_chaveBau = false;
+    public static bool com_crowbarOld1 = false;
+    public static bool com_crowbarOld2 = false;
 
     void Update(){
         if(Input.GetKeyDown("space")){
@@ -59,6 +59,11 @@ public class GravityRay : MonoBehaviour
             }
         }
 
+        com_extintor1 = objectsToCatch["Extintor1"];
+        com_extintor2 = objectsToCatch["Extintor2"];
+        com_chaveBau = objectsToCatch["ChestKey"];
+        com_crowbarOld1 = objectsToCatch["crowbarOld1"];
+        com_crowbarOld2 = objectsToCatch["crowbarOld2"];
 
     }
 }
