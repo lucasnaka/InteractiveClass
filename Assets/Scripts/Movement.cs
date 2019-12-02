@@ -9,6 +9,10 @@ public class Movement : NetworkBehaviour
     void Start()
     {
         camera = GameObject.FindGameObjectWithTag("MainCamera");
+        Vector3 initialPos = transform.position;
+        Vector3 initialVetor = new Vector3(-7, 0, 1.5f);
+        initialPos += initialVetor;
+        transform.position = initialPos;
     }
 
     public float shiftSpeed = 16.0f;

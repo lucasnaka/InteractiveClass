@@ -69,7 +69,7 @@ public class PlayerConnectionObject : NetworkBehaviour
         //RpcChangePlayerName(PlayerName);
     }
 
-    /* ClientRpc]
+    /* [ClientRpc]
     void RpcChangePlayerName(string n) {
         PlayerName = n;
     } */
