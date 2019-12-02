@@ -37,11 +37,14 @@ public class GravityRay : MonoBehaviour
     public static bool com_crowbarOld1 = false;
     public static bool com_crowbarOld2 = false;
 
+    public GameObject[] objects;
+
     void Update(){
         if(Input.GetKeyDown("space")){
             if (mao_direita == null)
             {
-                mao_direita = GameObject.FindGameObjectWithTag("mao_direita");
+                objects = GameObject.FindGameObjectsWithTag("mao_direita");
+                mao_direita = objects[objects.Length - 1];
             }
             if(!objectsToCatch.ContainsValue(true))
                 RaybeamStart();

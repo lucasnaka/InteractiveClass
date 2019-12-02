@@ -3602,6 +3602,7 @@ MonoBehaviour:
   mao_direita: {fileID: 2499289071563096121, guid: f87ef23b87bd96f4d98e72c3a8c078b9,
     type: 3}
   objectCaught: {fileID: 0}
+  objects: []
 --- !u!1 &1111006609
 GameObject:
   m_ObjectHideFlags: 0
