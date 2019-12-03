@@ -49,7 +49,8 @@ public class GravityRay : NetworkBehaviour
         //{
             print("CLient: peguei o extintor");
             RpcTeste(teste);
-       // }
+            RpcLigaObjetoMao("ExtintorMao", Manager.name);
+        // }
     }
 
 
@@ -67,6 +68,26 @@ public class GravityRay : NetworkBehaviour
 
       //  }
 
+    }
+
+    [Command] // roda no servidor
+    void CmdEscondeObjetoNoServidor(string tagObjeto, string PlayerName)
+    {
+        print("Client: peguei o " + tagObjeto);
+        Manager.escondeObjeto(tagObjeto);
+        RpcLigaObjetoMao(tagObjeto, PlayerName);
+    }
+
+
+    [ClientRpc] // roda nos clientes
+    void RpcLigaObjetoMao(string tagObjeto, string playerName)
+    {
+        if (Manager.name == playerName)
+        {
+            //os objetos devem ter a tag assim Extintor_1
+            GameObject objeto = GameObject.FindGameObjectWithTag("Extintor" + "Mao");
+            objeto.transform.GetChild(0).gameObject.SetActive(true);
+        }
     }
     public GameObject objectCaught;
     public static bool com_extintor1 = false;
