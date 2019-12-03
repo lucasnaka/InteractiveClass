@@ -9,6 +9,7 @@ namespace CustomHud
         private string Port = "7777";
         public float GuiOffset;
         private bool _started;
+        public string name = "player";
 
         public void Start()
         {
@@ -34,6 +35,7 @@ namespace CustomHud
                 myStyle.fontSize = 50;
                 GUILayout.Space(25);
                 IpAddress = GUILayout.TextField(IpAddress, myStyle);
+                name = GUILayout.TextField(name, myStyle);
                 //Port = GUILayout.TextField(Port, 5);
                 if (GUILayout.Button("Connect", GUILayout.Width(300)))
                 {
@@ -41,6 +43,8 @@ namespace CustomHud
                     NetworkManager.singleton.networkAddress = IpAddress;
                     NetworkManager.singleton.networkPort = int.Parse(Port);
                     NetworkManager.singleton.StartClient();
+                    Manager.name = name;
+                    Manager.atualizaNome(name);
                 }
             }
             else

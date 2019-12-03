@@ -1,11 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class GravityRay : MonoBehaviour
+public class GravityRay : NetworkBehaviour
 {
     int reachRange = 100;
     public GameObject mao_direita;
+    public GameObject extintor1;
+    public GameObject camera;
+    [SyncVar]
+    public bool extintor1_pego = false;
+
+
 
     Dictionary<string, bool> objectsToCatch = new Dictionary<string, bool>();
 
@@ -15,21 +22,52 @@ public class GravityRay : MonoBehaviour
         objectsToCatch.Add("ChestKey", false);
         objectsToCatch.Add("crowbarOld1", false);
         objectsToCatch.Add("crowbarOld2", false);
+        extintor1 = GameObject.FindGameObjectWithTag("Extintor1");
+        camera = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
     public void RaybeamStart()
     {
+
         RaycastHit hitInfo;
-        if(Physics.Raycast (transform.position, transform.forward, out hitInfo, reachRange)) {
+        if(Physics.Raycast (camera.transform.position, camera.transform.forward, out hitInfo, reachRange)) {
             if(objectsToCatch.ContainsKey(hitInfo.collider.gameObject.name))
             {
                 hitInfo.collider.gameObject.transform.parent = mao_direita.transform;
                 hitInfo.collider.gameObject.transform.localPosition = new Vector3(0, 0, 0);
                 objectsToCatch[hitInfo.collider.gameObject.name] = true;
+                CmdClientToServer(Manager.name);
+
+
             }
         }
     }
+    [Command]
+    void CmdClientToServer(string teste)
+    {
+        //if (isClient)
+        //{
+            print("CLient: peguei o extintor");
+            RpcTeste(teste);
+       // }
+    }
 
+
+    [ClientRpc]
+    void RpcTeste(string teste)
+    {
+       // if (isServer)
+       // {
+            extintor1_pego = true;
+        
+            Manager.atualizaNome(teste);
+           // extintor1.SetActive(false);
+            //extintor1.SetActive(false);
+            print("Servidor: pegou o extintor");
+
+      //  }
+
+    }
     public GameObject objectCaught;
     public static bool com_extintor1 = false;
     public static bool com_extintor2 = false; 
@@ -37,10 +75,13 @@ public class GravityRay : MonoBehaviour
     public static bool com_crowbarOld1 = false;
     public static bool com_crowbarOld2 = false;
 
+    
+
     public GameObject[] objects;
 
     void Update(){
         if(Input.GetKeyDown("space")){
+            CmdClientToServer(Manager.name);
             if (mao_direita == null)
             {
                 objects = GameObject.FindGameObjectsWithTag("mao_direita");

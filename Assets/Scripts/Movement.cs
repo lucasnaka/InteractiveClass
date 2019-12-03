@@ -9,10 +9,13 @@ public class Movement : NetworkBehaviour
     void Start()
     {
         camera = GameObject.FindGameObjectWithTag("MainCamera");
+        Manager.atualizaNome(Manager.name);
     }
 
     public float shiftSpeed = 16.0f;
     public bool showInstructions = true;
+    bool extintor1_pego = false;
+    
     
 
     private Vector3 startEulerAngles;
@@ -52,7 +55,7 @@ public class Movement : NetworkBehaviour
         if (Input.GetKey("a"))
         {
             m_Animator.SetFloat("walk", 1);
-
+            //teste
             pos -= camera.transform.right * speed * Time.deltaTime;
         }
         float right = 0.0f;
