@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class Manager : NetworkBehaviour
 {
     // Start is called before the first frame update
-    public static string name = "teste";
+    public static string name = "Client_Host";
+    public static GameObject objetoRecebido;
     static Text HudName;
     void Start()
     {
@@ -24,6 +25,14 @@ public class Manager : NetworkBehaviour
     {
         HudName = GameObject.FindGameObjectWithTag("Name").GetComponent<Text>();
         HudName.text = name1;
+
+    }
+
+    public static void escondeObjeto(string tagObjeto)
+    {
+        
+        objetoRecebido = GameObject.FindGameObjectWithTag(tagObjeto);
+        objetoRecebido.SetActive(false);
 
     }
 }

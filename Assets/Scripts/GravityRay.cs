@@ -9,6 +9,7 @@ public class GravityRay : NetworkBehaviour
     public GameObject mao_direita;
     public GameObject extintor1;
     public GameObject camera;
+    public GameObject hitObject;
     [SyncVar]
     public bool extintor1_pego = false;
 
@@ -33,40 +34,72 @@ public class GravityRay : NetworkBehaviour
         if(Physics.Raycast (camera.transform.position, camera.transform.forward, out hitInfo, reachRange)) {
             if(objectsToCatch.ContainsKey(hitInfo.collider.gameObject.name))
             {
-                hitInfo.collider.gameObject.transform.parent = mao_direita.transform;
-                hitInfo.collider.gameObject.transform.localPosition = new Vector3(0, 0, 0);
-                objectsToCatch[hitInfo.collider.gameObject.name] = true;
-                CmdClientToServer(Manager.name);
+                hitObject = hitInfo.collider.gameObject;
+                //hitObject.transform.parent = mao_direita.transform;
+               // hitObject.transform.localPosition = new Vector3(0, 0, 0);
+                objectsToCatch[hitObject.name] = true;
+               
 
 
             }
         }
     }
-    [Command]
-    void CmdClientToServer(string teste)
+    /* [Command]
+     void CmdClientToServer(string teste)
+     {
+         //if (isClient)
+         //{
+             print("CLient: peguei o extintor");
+             RpcTeste(teste);
+             RpcLigaObjetoMao("ExtintorMao", Manager.name);
+         // }
+     }
+
+
+     [ClientRpc]
+     void RpcTeste(string teste)
+     {
+        // if (isServer)
+        // {
+             extintor1_pego = true;
+
+             Manager.atualizaNome(teste);
+            // extintor1.SetActive(false);
+             //extintor1.SetActive(false);
+             print("Servidor: pegou o extintor");
+
+       //  }
+
+     }*/
+
+    [Command] // roda no servidor
+    void CmdEscondeObjetoNoServidor(string tagObjeto, string PlayerName)
     {
-        //if (isClient)
-        //{
-            print("CLient: peguei o extintor");
-            RpcTeste(teste);
-       // }
+        print("Client: peguei o " + tagObjeto);
+        Manager.escondeObjeto(tagObjeto);
+        RpcLigaObjetoMao(tagObjeto, PlayerName);
     }
 
 
-    [ClientRpc]
-    void RpcTeste(string teste)
+    [ClientRpc] // roda nos clientes
+    void RpcLigaObjetoMao(string tagObjeto, string playerName)
     {
-       // if (isServer)
-       // {
-            extintor1_pego = true;
-        
-            Manager.atualizaNome(teste);
-           // extintor1.SetActive(false);
-            //extintor1.SetActive(false);
-            print("Servidor: pegou o extintor");
+        Manager.escondeObjeto(tagObjeto);
+        if (Manager.name == playerName)
+        {
+            //os objetos devem ter a tag assim Extintor_1
+            if (tagObjeto == "Extintor1" || tagObjeto == "Extintor2")
+                tagObjeto = "Extintor";
+            //GameObject [] objetos = GameObject.FindGameObjectsWithTag( tagObjeto+ "Mao");
 
-      //  }
+            // objetos[objetos.Length-1].transform.GetChild(0).gameObject.SetActive(true);
+            //GameObject objeto = GameObject.FindGameObjectWithTag(tagObjeto + "Mao");
 
+            mao_direita.transform.GetChild(0).gameObject.SetActive(true);
+           
+
+        }
+       
     }
     public GameObject objectCaught;
     public static bool com_extintor1 = false;
@@ -81,14 +114,23 @@ public class GravityRay : NetworkBehaviour
 
     void Update(){
         if(Input.GetKeyDown("space")){
-            CmdClientToServer(Manager.name);
+           // CmdClientToServer(Manager.name);
+
             if (mao_direita == null)
             {
                 objects = GameObject.FindGameObjectsWithTag("mao_direita");
                 mao_direita = objects[objects.Length - 1];
             }
-            if(!objectsToCatch.ContainsValue(true))
-                RaybeamStart();
+            if (!objectsToCatch.ContainsValue(true))
+            {
+               
+                RaybeamStart();   
+                
+                CmdEscondeObjetoNoServidor(hitObject.tag, Manager.name);
+                
+                   
+            }
+                
             else
             {
                 string objectName = "";

@@ -5,8 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - mao_direita
-  - Extintor1
   - Name
+  - ExtintorMao
+  - Extintor_1
+  - Extintor1
   layers:
   - Default
   - TransparentFX
