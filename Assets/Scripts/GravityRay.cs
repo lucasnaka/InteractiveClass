@@ -139,8 +139,8 @@ public class GravityRay : NetworkBehaviour
             {
                
                 RaybeamStart();   
-                
-                CmdEscondeObjetoNoServidor(hitObject.tag, Manager.name);
+                if(hitObject != null)
+                 CmdEscondeObjetoNoServidor(hitObject.tag, Manager.name);
                 
                    
             }

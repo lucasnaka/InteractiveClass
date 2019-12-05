@@ -125,11 +125,11 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     Vector3 offset = mousePosition - startMousePosition;
                     Manager.player.transform.localEulerAngles = startEulerAngles + new Vector3(-offset.y * 360.0f / Screen.height, offset.x * 360.0f / Screen.width, 0.0f);
                 }
-           // }
-          //  else
+            //}
+           // else
            // {
                 //Se nao uma versao em realidadeVirtual/Desktop entao é mobile
-                //GyroModifyCamera();
+              //  GyroModifyCamera();
            // }
         }
 
