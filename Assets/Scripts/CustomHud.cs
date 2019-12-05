@@ -10,34 +10,36 @@ namespace CustomHud
         public float GuiOffset;
         private bool _started;
         public string name = "player";
+        public GameObject mobileHUD;
 
         public void Start()
         {
             _started = false;
-            
+            Manager.mobileHUD = GameObject.FindGameObjectWithTag("MobileHUD");
+            Manager.toggleMobileHUD();
 
         }
         public void OnGUI()
         {
             GUILayout.Space(GuiOffset);
-          ;
-           
+            GUIStyle myStyle = new GUIStyle(GUI.skin.button);
+            myStyle.fontSize = 80;
+            GUILayout.Space(40);
+
             if (!_started)
             {
-                if (GUILayout.Button("Host", GUILayout.Width(300)))
+                if (GUILayout.Button("Host", myStyle))
                 {
                     print("Host");
                     _started = true;
                     NetworkManager.singleton.networkPort = int.Parse(Port);
                     NetworkManager.singleton.StartHost();
                 }
-                GUIStyle myStyle = new GUIStyle(GUI.skin.button);
-                myStyle.fontSize = 50;
-                GUILayout.Space(25);
+               
                 IpAddress = GUILayout.TextField(IpAddress, myStyle);
                 name = GUILayout.TextField(name, myStyle);
                 //Port = GUILayout.TextField(Port, 5);
-                if (GUILayout.Button("Connect", GUILayout.Width(300)))
+                if (GUILayout.Button("Connect", myStyle))
                 {
                     _started = true;
                     NetworkManager.singleton.networkAddress = IpAddress;
@@ -49,7 +51,7 @@ namespace CustomHud
             }
             else
             {
-                if (GUILayout.Button("Disconnect", GUILayout.Width(300)))
+                if (GUILayout.Button("Disconnect", myStyle))
                 {
                     _started = false;
                     NetworkManager.singleton.StopHost();

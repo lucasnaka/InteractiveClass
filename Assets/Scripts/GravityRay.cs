@@ -78,6 +78,19 @@ public class GravityRay : NetworkBehaviour
         print("Client: peguei o " + tagObjeto);
         Manager.escondeObjeto(tagObjeto);
         RpcLigaObjetoMao(tagObjeto, PlayerName);
+        GameObject [] clients = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject client in clients) {
+            PlayerInfo info = client.GetComponent<PlayerInfo>();
+            if(info.PlayerName == PlayerName)
+            {
+                foreach (Transform child in client.transform)
+                {
+                    if (child.tag == "mao_direita")
+                        child.transform.GetChild(0).gameObject.SetActive(true);
+                }
+            }
+        
+        }
     }
 
 
