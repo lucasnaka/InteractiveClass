@@ -123,9 +123,10 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 if (Input.GetMouseButton(1) /* right mouse */)
                 {
                     Vector3 offset = mousePosition - startMousePosition;
-                    Manager.player.transform.localEulerAngles = startEulerAngles + new Vector3(-offset.y * 360.0f / Screen.height, offset.x * 360.0f / Screen.width, 0.0f);
-                }
-            //}
+                    Manager.camera.transform.localEulerAngles = startEulerAngles + new Vector3(-offset.y * 360.0f / Screen.height, offset.x * 360.0f / Screen.width, 0.0f);
+                    Manager.player.transform.localEulerAngles = startEulerAngles + new Vector3(0.0f, offset.x * 360.0f / Screen.width, 0.0f);
+            }
+           // }
            // else
            // {
                 //Se nao uma versao em realidadeVirtual/Desktop entao é mobile
