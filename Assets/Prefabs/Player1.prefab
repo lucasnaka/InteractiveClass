@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 95550468449064870}
   - component: {fileID: 114902744489854944}
   - component: {fileID: 114160265744527650}
+  - component: {fileID: 5977223009438730283}
   m_Layer: 0
   m_Name: Player1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -84,8 +85,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shiftSpeed: 16
   showInstructions: 1
+  player: {fileID: 0}
   speed: 2
   m_Animator: {fileID: 3421859696060988006}
+  holdButtonDown:
+    m_PersistentCalls:
+      m_Calls: []
+  holdButtonUp:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &114941568382333694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,6 +174,19 @@ MonoBehaviour:
   extintor1_pego: 0
   objectCaught: {fileID: 0}
   objects: []
+--- !u!114 &5977223009438730283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31455c586322b374588eae794f5022ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerName: 
 --- !u!1 &3421859696051587072
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,6 +845,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3421859696051885444}
   - component: {fileID: 3421859696060988006}
+  - component: {fileID: 12430362386567025}
+  - component: {fileID: 5557822314826470318}
   m_Layer: 0
   m_Name: IdleMan (1)
   m_TagString: Untagged
@@ -866,6 +889,59 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &12430362386567025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3421859696051587492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 0
+    i1: 0
+    i2: 0
+    i3: 0
+    i4: 0
+    i5: 0
+    i6: 0
+    i7: 0
+    i8: 0
+    i9: 0
+    i10: 0
+    i11: 0
+    i12: 0
+    i13: 0
+    i14: 0
+    i15: 0
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
+--- !u!114 &5557822314826470318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3421859696051587492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 0}
+  m_ParameterSendBits: 0
+  param0: 
+  param1: 
+  param2: 
+  param3: 
+  param4: 
+  param5: 
 --- !u!1 &3421859696051587494
 GameObject:
   m_ObjectHideFlags: 0
@@ -2031,7 +2107,7 @@ Transform:
   m_LocalPosition: {x: -0.03696562, y: 0.11042176, z: 0.0016513101}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2434987733345511446}
+  - {fileID: 2434987733345511432}
   - {fileID: 3421859696051885526}
   m_Father: {fileID: 3421859696051885514}
   m_RootOrder: 0
@@ -2598,7 +2674,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e6beaec8d3757642b1429d47592c467, type: 3}
---- !u!4 &2434987733345511446 stripped
+--- !u!4 &2434987733345511432 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 480713023246875424, guid: 2e6beaec8d3757642b1429d47592c467,
     type: 3}

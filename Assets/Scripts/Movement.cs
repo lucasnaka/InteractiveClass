@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class Movement : NetworkBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     // Start is called before the first frame update
 
@@ -27,14 +27,17 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public UnityEvent holdButtonUp;
     void Start()
     {
-        camera = GameObject.FindGameObjectWithTag("MainCamera");
-        player = GameObject.FindGameObjectWithTag("Player");
-        Manager.atualizaNome(Manager.name);
-        Manager.camera = camera;
-        Manager.player = player;       
+        if (isLocalPlayer)
+        {
+            camera = GameObject.FindGameObjectWithTag("MainCamera");
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            player = players[players.Length -1] ;
+            Manager.atualizaNome(Manager.name);
+            Manager.camera = camera;
+            Manager.player = player;
+            Manager.m_Animator = player.transform.GetChild(0).gameObject.GetComponent<Animator>();
+        }
         
-      
-        //Manager.m_Animator = player.GetComponent<Animator>();
     }
 
 
@@ -46,19 +49,19 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             Manager.camera.transform.rotation = Manager.player.transform.rotation;
             Vector3 pos = Manager.player.transform.position;
             Vector3 vetor = new Vector3(Manager.camera.transform.forward.x, 0, Manager.camera.transform.forward.z);
-            // Manager.m_Animator.SetFloat("walk", 0);
+             Manager.m_Animator.SetFloat("walk", 0);
             if (buttonHoldDown)
             {
                 if (paraFrente)
                 {
-                    // Manager.m_Animator.SetFloat("walk", 1);
+                     Manager.m_Animator.SetFloat("walk", 1);
                     pos += vetor * speed * Time.deltaTime;
                     Manager.player.transform.position = pos;
 
                 }
                 else
                 {
-                    // Manager.m_Animator.SetFloat("walk", 1);
+                     Manager.m_Animator.SetFloat("walk", 1);
                     pos -= vetor * speed * Time.deltaTime;
                     Manager.player.transform.position = pos;
 
@@ -71,29 +74,29 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
            // {
                 if (Input.GetKey("w"))
                 {
-                    // m_Animator.SetFloat("walk", 1);
+                    Manager.m_Animator.SetFloat("walk", 1);
                     pos += vetor * speed * Time.deltaTime;
-                    player.transform.position = pos;
+                    Manager.player.transform.position = pos;
                 }
                 if (Input.GetKey("s"))
                 {
-                    // m_Animator.SetFloat("walk", 1);
+                    Manager.m_Animator.SetFloat("walk", 1);
                     pos -= vetor * speed * Time.deltaTime;
-                    player.transform.position = pos;
+                    Manager.player.transform.position = pos;
                 }
                 if (Input.GetKey("d"))
                 {
-                    // m_Animator.SetFloat("walk", 1);
+                    Manager.m_Animator.SetFloat("walk", 1);
 
-                    pos += camera.transform.right * speed * Time.deltaTime;
-                    player.transform.position = pos;
+                    pos += Manager.camera.transform.right * speed * Time.deltaTime;
+                    Manager.player.transform.position = pos;
                 }
                 if (Input.GetKey("a"))
                 {
-                    // m_Animator.SetFloat("walk", 1);
+                    Manager.m_Animator.SetFloat("walk", 1);
                     //teste
-                    pos -= camera.transform.right * speed * Time.deltaTime;
-                    player.transform.position = pos;
+                    pos -= Manager.camera.transform.right * speed * Time.deltaTime;
+                    Manager.player.transform.position = pos;
                 }
                 float right = 0.0f;
                 float currentSpeed = speed;
