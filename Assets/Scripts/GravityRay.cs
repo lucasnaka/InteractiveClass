@@ -126,7 +126,8 @@ public class GravityRay : NetworkBehaviour
     public GameObject[] objects;
 
     void Update(){
-        if(Input.GetKeyDown("space")){
+        if(Input.GetKeyDown("space") || Input.GetMouseButtonDown(0))
+        {
            // CmdClientToServer(Manager.name);
 
             if (mao_direita == null)

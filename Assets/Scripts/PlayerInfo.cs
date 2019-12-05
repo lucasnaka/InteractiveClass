@@ -9,6 +9,7 @@ public class PlayerInfo : MonoBehaviour
     void Start()
     {
         PlayerName = Manager.name;
+        Manager.toggleMobileHUD();
     }
 
     // Update is called once per frame

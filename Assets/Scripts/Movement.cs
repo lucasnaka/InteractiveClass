@@ -31,10 +31,9 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         player = GameObject.FindGameObjectWithTag("Player");
         Manager.atualizaNome(Manager.name);
         Manager.camera = camera;
-        Manager.player = player;
-        if (!Manager.VRAplication) {
-            Manager.toggleMobileHUD();
-        }
+        Manager.player = player;       
+        
+      
         //Manager.m_Animator = player.GetComponent<Animator>();
     }
 
@@ -68,8 +67,8 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
             }
             //Verifica se é uma versao em Realidade virtual/Desktop
-            if (Manager.VRAplication)
-            {
+            //if (Manager.VRAplication)
+           // {
                 if (Input.GetKey("w"))
                 {
                     // m_Animator.SetFloat("walk", 1);
@@ -126,12 +125,12 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     Vector3 offset = mousePosition - startMousePosition;
                     Manager.player.transform.localEulerAngles = startEulerAngles + new Vector3(-offset.y * 360.0f / Screen.height, offset.x * 360.0f / Screen.width, 0.0f);
                 }
-            }
-            else
-            {
+           // }
+          //  else
+           // {
                 //Se nao uma versao em realidadeVirtual/Desktop entao é mobile
-                GyroModifyCamera();
-            }
+                //GyroModifyCamera();
+           // }
         }
 
     }
