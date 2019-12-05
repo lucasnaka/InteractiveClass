@@ -9,6 +9,7 @@ TagManager:
   - ExtintorMao
   - Extintor_1
   - Extintor1
+  - MobileHUD
   layers:
   - Default
   - TransparentFX

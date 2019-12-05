@@ -73,11 +73,27 @@ public class GravityRay : NetworkBehaviour
      }*/
 
     [Command] // roda no servidor
-    void CmdEscondeObjetoNoServidor(string tagObjeto, string PlayerName)
+    void CmdEscondeObjetoNoServidor(string tagObjeto, string playerName)
     {
         print("Client: peguei o " + tagObjeto);
         Manager.escondeObjeto(tagObjeto);
-        RpcLigaObjetoMao(tagObjeto, PlayerName);
+        RpcLigaObjetoMao(tagObjeto, playerName);
+
+        GameObject[] clients = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject client in clients)
+        {
+            PlayerInfo info = client.GetComponent<PlayerInfo>();
+           // if (info.PlayerName == playerName)
+           // {
+                foreach (Transform child in client.transform)
+                {
+                    if (child.tag == "mao_direita")
+                        child.transform.GetChild(0).gameObject.SetActive(true);
+                }
+           // }
+
+        }
+
     }
 
 
@@ -99,7 +115,9 @@ public class GravityRay : NetworkBehaviour
            
 
         }
-       
+
+        
+
     }
     public GameObject objectCaught;
     public static bool com_extintor1 = false;

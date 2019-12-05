@@ -7,14 +7,14 @@ public class OpenExitDoor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject.Find("PortaSaidaDireita").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled = false;
-        GameObject.Find("PortaSaidaEsquerda").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled = false;
+       // GameObject.Find("PortaSaidaDireita").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled = false;
+       // GameObject.Find("PortaSaidaEsquerda").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!GameObject.Find("PortaSaidaDireita").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled && GravityRay.com_crowbarOld1 && GravityRay.com_crowbarOld2)
+       /* if (!GameObject.Find("PortaSaidaDireita").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled && GravityRay.com_crowbarOld1 && GravityRay.com_crowbarOld2)
         {
             GameObject.Find("PortaSaidaDireita").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled = true;
         }
@@ -22,6 +22,6 @@ public class OpenExitDoor : MonoBehaviour
         if (!GameObject.Find("PortaSaidaEsquerda").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled && GravityRay.com_crowbarOld1 && GravityRay.com_crowbarOld2)
         {
             GameObject.Find("PortaSaidaEsquerda").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled = true;
-        }
+        }*/
     }
 }

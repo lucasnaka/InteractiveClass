@@ -9,7 +9,11 @@ public class Manager : NetworkBehaviour
     // Start is called before the first frame update
     public static string name = "Client_Host";
     public static GameObject objetoRecebido;
+    public static GameObject camera;
+    public static GameObject player;
+    public static Animator m_Animator;
     static Text HudName;
+    public static bool VRAplication = false;
     void Start()
     {
         
@@ -32,7 +36,8 @@ public class Manager : NetworkBehaviour
     {
         
         objetoRecebido = GameObject.FindGameObjectWithTag(tagObjeto);
-        objetoRecebido.SetActive(false);
+        if(objetoRecebido != null)
+            objetoRecebido.SetActive(false);
 
     }
 }

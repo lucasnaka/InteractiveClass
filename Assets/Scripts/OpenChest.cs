@@ -7,15 +7,15 @@ public class OpenChest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject.Find("chest/cap").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled = false;
+       // GameObject.Find("chest/cap").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!GameObject.Find("chest/cap").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled && GravityRay.com_chaveBau)
+        /*if (!GameObject.Find("chest/cap").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled && GravityRay.com_chaveBau)
         {
             GameObject.Find("chest/cap").GetComponent<Valve.VR.InteractionSystem.CircularDrive>().enabled = true;
-        }
+        }*/
     }
 }
