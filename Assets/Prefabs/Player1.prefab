@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 114902744489854944}
   - component: {fileID: 114160265744527650}
   - component: {fileID: 5977223009438730283}
+  - component: {fileID: 114915104973485696}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -189,6 +190,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerName: 
   nameText: {fileID: 8094441593294628411}
+--- !u!114 &114915104973485696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 202a6e24b48d1684398409c47161adcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackingOriginTransform: {fileID: 447954}
+  hmdTransforms:
+  - {fileID: 429506, guid: 68e55d7672819bc41857ff5ff0f04492, type: 3}
+  - {fileID: 496744, guid: 68e55d7672819bc41857ff5ff0f04492, type: 3}
+  hands:
+  - {fileID: 11450312, guid: 68e55d7672819bc41857ff5ff0f04492, type: 3}
+  - {fileID: 11401046, guid: 68e55d7672819bc41857ff5ff0f04492, type: 3}
+  - {fileID: 11497470, guid: 68e55d7672819bc41857ff5ff0f04492, type: 3}
+  headCollider: {fileID: 13533284, guid: 68e55d7672819bc41857ff5ff0f04492, type: 3}
+  rigSteamVR: {fileID: 114188, guid: 68e55d7672819bc41857ff5ff0f04492, type: 3}
+  rig2DFallback: {fileID: 105336, guid: 68e55d7672819bc41857ff5ff0f04492, type: 3}
+  audioListener: {fileID: 471722, guid: 68e55d7672819bc41857ff5ff0f04492, type: 3}
+  allowToggleTo2D: 1
 --- !u!1 &3421859696051587072
 GameObject:
   m_ObjectHideFlags: 0

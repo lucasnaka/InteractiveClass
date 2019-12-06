@@ -59,7 +59,7 @@ public class PlayerInfo : NetworkBehaviour
         {
             PlayerName = Manager.name;
             Manager.toggleMobileHUD();
-            nameText.text = PlayerName;
+           // nameText.text = PlayerName;
             CmdAddClientToServer(this.gameObject, PlayerName);
         }
 
@@ -67,7 +67,7 @@ public class PlayerInfo : NetworkBehaviour
 
     public void updateDisplayedName(string name)
     {
-        nameText.text = name;
+       // nameText.text = name;
     }
 
     // Update is called once per frame
