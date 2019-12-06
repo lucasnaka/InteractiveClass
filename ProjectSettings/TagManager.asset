@@ -11,6 +11,7 @@ TagManager:
   - Extintor1
   - MobileHUD
   - NameText
+  - MainCameraVR
   layers:
   - Default
   - TransparentFX

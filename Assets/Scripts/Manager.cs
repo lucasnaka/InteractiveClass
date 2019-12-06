@@ -10,12 +10,14 @@ public class Manager : MonoBehaviour
     public static string name = "Client_Host";
     public static GameObject objetoRecebido;
     public static GameObject camera;
+    public static GameObject cameraVR;
     public static GameObject player;
     public static Animator m_Animator;
     static Text HudName;
-    public static bool VRAplication = false;
+    public static bool VRAplication = true;
     public static GameObject mobileHUD;
-
+    public static List<GameObject> playersInScene;
+    public static List<string> playersInfoInScene;
     void Start()
     {
 
@@ -43,7 +45,8 @@ public class Manager : MonoBehaviour
 
     }
 
-    public static void toggleMobileHUD() {
+    public static void toggleMobileHUD()
+    {
         mobileHUD.SetActive(!mobileHUD.activeSelf);
 
 

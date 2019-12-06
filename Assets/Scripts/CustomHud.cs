@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.XR;
 
 namespace CustomHud
 {
@@ -17,6 +18,7 @@ namespace CustomHud
             _started = false;
             Manager.mobileHUD = GameObject.FindGameObjectWithTag("MobileHUD");
             Manager.toggleMobileHUD();
+          //  XRSettings.enabled = false;
 
         }
         public void OnGUI()
@@ -34,6 +36,8 @@ namespace CustomHud
                     _started = true;
                     NetworkManager.singleton.networkPort = int.Parse(Port);
                     NetworkManager.singleton.StartHost();
+                    Manager.name = name;
+                    Manager.atualizaNome(name);
                 }
                
                 IpAddress = GUILayout.TextField(IpAddress, myStyle);

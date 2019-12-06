@@ -22,6 +22,7 @@ public class Movement : NetworkBehaviour, IPointerDownHandler, IPointerUpHandler
     public float speed = 1.1f;
     public Animator m_Animator;
     GameObject camera;
+    GameObject cameraVR;
 
     public UnityEvent holdButtonDown;
     public UnityEvent holdButtonUp;
@@ -29,7 +30,10 @@ public class Movement : NetworkBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (isLocalPlayer)
         {
-            camera = GameObject.FindGameObjectWithTag("MainCamera");
+            
+            Manager.cameraVR = GameObject.FindGameObjectWithTag("MainCameraVR");           
+            camera = GameObject.FindGameObjectWithTag("MainCamera");            
+           
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
             player = players[players.Length -1] ;
             Manager.atualizaNome(Manager.name);
@@ -45,11 +49,30 @@ public class Movement : NetworkBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (Manager.player != null && Manager.camera != null)
         {
-            Manager.camera.transform.position = new Vector3(Manager.player.transform.position.x, Manager.player.transform.position.y + 2.1f, Manager.player.transform.position.z);
-            Manager.camera.transform.rotation = Manager.player.transform.rotation;
+            if (Manager.VRAplication)
+            {
+                Manager.camera.transform.position = new Vector3(Manager.player.transform.position.x, Manager.player.transform.position.y, Manager.player.transform.position.z);
+                Manager.player.transform.eulerAngles = new Vector3(Manager.player.transform.eulerAngles.x, Manager.cameraVR.transform.eulerAngles.y, Manager.player.transform.eulerAngles.z);
+            }
+            else
+            {
+                Manager.camera.transform.position = new Vector3(Manager.player.transform.position.x, Manager.player.transform.position.y + 2.1f, Manager.player.transform.position.z);
+                Manager.camera.transform.rotation = Manager.player.transform.rotation;
+            }
+            
+            
             Vector3 pos = Manager.player.transform.position;
-            Vector3 vetor = new Vector3(Manager.camera.transform.forward.x, 0, Manager.camera.transform.forward.z);
-             Manager.m_Animator.SetFloat("walk", 0);
+            Vector3 vetor;
+            if (Manager.VRAplication) {
+                 vetor = new Vector3(Manager.cameraVR.gameObject.transform.forward.x, 0, Manager.cameraVR.gameObject.transform.forward.z);
+
+            }
+            else
+            {
+                vetor = new Vector3(Manager.camera.transform.forward.x, 0, Manager.camera.transform.forward.z);
+
+            }
+            Manager.m_Animator.SetFloat("walk", 0);
             if (buttonHoldDown)
             {
                 if (paraFrente)
