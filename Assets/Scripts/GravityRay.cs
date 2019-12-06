@@ -75,43 +75,46 @@ public class GravityRay : NetworkBehaviour
     [Command] // roda no servidor
     void CmdEscondeObjetoNoServidor(string tagObjeto, string PlayerName)
     {
-        print("Client: peguei o " + tagObjeto);
+        print("Client: peguei o " + tagObjeto+" - "+ PlayerName);
         Manager.escondeObjeto(tagObjeto);
         RpcLigaObjetoMao(tagObjeto, PlayerName);
-        GameObject [] clients = GameObject.FindGameObjectsWithTag("Player");
-        foreach (GameObject client in clients) {
-            PlayerInfo info = client.GetComponent<PlayerInfo>();
-            if(info.PlayerName == PlayerName)
-            {
-                foreach (Transform child in client.transform)
-                {
-                    if (child.tag == "mao_direita")
-                        child.transform.GetChild(0).gameObject.SetActive(true);
-                }
-            }
         
-        }
     }
 
 
     [ClientRpc] // roda nos clientes
     void RpcLigaObjetoMao(string tagObjeto, string playerName)
     {
-        Manager.escondeObjeto(tagObjeto);
-        if (Manager.name == playerName)
+
+        if (isLocalPlayer)
         {
+            Manager.escondeObjeto(tagObjeto);
+            GameObject[] clients = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject client in clients)
+            {
+                PlayerInfo info = client.GetComponent<PlayerInfo>();
+
+                info.updateDisplayedName(info.PlayerName);
+
+
+            }
+
             //os objetos devem ter a tag assim Extintor_1
             if (tagObjeto == "Extintor1" || tagObjeto == "Extintor2")
                 tagObjeto = "Extintor";
-            //GameObject [] objetos = GameObject.FindGameObjectsWithTag( tagObjeto+ "Mao");
+           // GameObject[] objetos = GameObject.FindGameObjectsWithTag(tagObjeto + "Mao");
 
-            // objetos[objetos.Length-1].transform.GetChild(0).gameObject.SetActive(true);
+            //mao_direita = objetos[objetos.Length-1].transform.GetChild(0).gameObject.SetActive(true);
             //GameObject objeto = GameObject.FindGameObjectWithTag(tagObjeto + "Mao");
+            //mao_direita.transform.GetChild(0).gameObject.SetActive(true);
+        }
+            
+        
 
-            mao_direita.transform.GetChild(0).gameObject.SetActive(true);
+        
            
 
-        }
+        
        
     }
     public GameObject objectCaught;
@@ -128,7 +131,7 @@ public class GravityRay : NetworkBehaviour
     void Update(){
         if(Input.GetKeyDown("space") || Input.GetMouseButtonDown(0))
         {
-           // CmdClientToServer(Manager.name);
+            //CmdClientToServer(Manager.name);
 
             if (mao_direita == null)
             {
