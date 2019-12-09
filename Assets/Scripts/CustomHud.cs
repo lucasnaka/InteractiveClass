@@ -38,6 +38,7 @@ namespace CustomHud
                     NetworkManager.singleton.StartHost();
                     Manager.name = name;
                     Manager.atualizaNome(name);
+                    Manager.startServerTCP();
                 }
                
                 IpAddress = GUILayout.TextField(IpAddress, myStyle);
