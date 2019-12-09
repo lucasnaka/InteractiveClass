@@ -8,7 +8,7 @@ public class GravityRay : NetworkBehaviour
 {
     int reachRange = 100;
     public GameObject mao_direita;
-    public GameObject camera;
+    public static GameObject camera;
     public GameObject hitObject;
 
     [SyncVar]
@@ -26,7 +26,6 @@ public class GravityRay : NetworkBehaviour
     TCPClient clientTCP;
     void Start()
     {
-        camera = GameObject.FindGameObjectWithTag("MainCamera");
         extintor1_pego = false;
         extintor2_pego = false;
         chave_pega = false;
@@ -40,10 +39,6 @@ public class GravityRay : NetworkBehaviour
             clientTCP.setStart();
 
         }
-        
-       
-            
-            
     }
 
     /*public void RaybeamStart()

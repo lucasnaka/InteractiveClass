@@ -4,75 +4,50 @@ using UnityEngine;
 
 public class KeypadController : MonoBehaviour
 {
-
+    public static GameObject camera;
     CodeLock codeLock;
 
     int reachRange = 100;
-
+    void Start()
+    {
+        codeLock = new CodeLock();
+    }
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             CheckHitObj();
         }
     }
-
     void CheckHitObj()
     {
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         
-        if(Physics.Raycast(ray, out hit, reachRange))
+        if(camera && Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, reachRange))
         {
-            codeLock = hit.transform.gameObject.GetComponentInParent<CodeLock>();
-
-            if(codeLock != null)
+            if (hit.collider.gameObject.name == "0" ||
+                hit.collider.gameObject.name == "1" ||
+                hit.collider.gameObject.name == "2" ||
+                hit.collider.gameObject.name == "3" ||
+                hit.collider.gameObject.name == "4" ||
+                hit.collider.gameObject.name == "5" ||
+                hit.collider.gameObject.name == "6" ||
+                hit.collider.gameObject.name == "7" ||
+                hit.collider.gameObject.name == "8" ||
+                hit.collider.gameObject.name == "9")
             {
-                string value = hit.transform.name;
+                string value = hit.collider.gameObject.name;
                 codeLock.SetValue(value);
             }
+                
+                //codeLock = hit.transform.gameObject.GetComponentInParent<CodeLock>();
+
+            //if (codeLock != null)
+            //{
+            //    string value = hit.transform.name;
+            //    codeLock.SetValue(value);
+            //}
         }
     }
-
-    /* private Rigidbody target;
-    private bool isActive = false;
-
-    private void Attract() {
-        target.isKinematic = true; // desativa a fisica
-        target.MovePosition(transform.position + transform.forward);
-    }
-
-    public void RaybeamStop()
-    {
-        isActive = false;
-        target = null;
-    }
-
-    public void RaybeamStart()
-    {
-        RaycastHit hitInfo;
-        if(Physics.Raycast (transform.position,
-                            transform.forward,
-                            out hitInfo, reachRange)) {
-            Debug.DrawRay (transform.position,
-                           transform.forward * hitInfo.distance,
-                           Color.green);
-            if(hitInfo.collider.attachedRigidBody != null){
-                target = hitInfo.collider.attachedRigidBody;
-                isActive = true;
-            }
-        }
-    }
-
-    void Update(){
-        if(Input.GetKeyDown("space")){
-            RaybeamStart();
-        }
-        if(Input.GetKeyUp("space")){
-            RaybeamStop();
-        }
-        if(isActive){
-            Attract();
-        }
-    } */
 }

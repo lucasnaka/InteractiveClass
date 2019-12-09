@@ -21,8 +21,7 @@ public class Movement : NetworkBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public float speed = 1.1f;
     public Animator m_Animator;
-    GameObject camera;
-    GameObject cameraVR;
+    public GameObject camera;
 
     public UnityEvent holdButtonDown;
     public UnityEvent holdButtonUp;
@@ -30,18 +29,46 @@ public class Movement : NetworkBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (isLocalPlayer)
         {
-            
-            Manager.cameraVR = GameObject.FindGameObjectWithTag("MainCameraVR");           
-            camera = GameObject.FindGameObjectWithTag("MainCamera");            
-           
+            if (Manager.VRAplication)
+            {
+                camera = GameObject.FindGameObjectWithTag("MainCamera");
+                GameObject.FindGameObjectWithTag("MainCameraMobile").SetActive(false);
+            }
+            else
+            {
+                camera = GameObject.FindGameObjectWithTag("MainCameraMobile");
+                GameObject.FindGameObjectWithTag("MainCamera").SetActive(false);
+            }
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            player = players[players.Length -1] ;
+            player = players[players.Length - 1];
             Manager.atualizaNome(Manager.name);
             Manager.camera = camera;
+            ExtinguishFire.camera = camera;
+            KeypadController.camera = camera;
+            GravityRay.camera = camera;
             Manager.player = player;
+
+            // Indicar posicao inicial do player 1
+            if (players.Length == 1)
+            {
+                Vector3 initialPos = Manager.player.transform.position;
+                Vector3 initialVector = new Vector3(-7.0f, 0, 1.5f);
+                initialPos += initialVector;
+                Manager.player.transform.position = initialPos;
+            }
+
+            // Indicar posicao inicial do player 2
+            else if (players.Length == 2)
+            {
+                Vector3 initialPos = Manager.player.transform.position;
+                Vector3 initialVector = new Vector3(-7.0f, 0, -1.5f);
+                initialPos += initialVector;
+                Manager.player.transform.position = initialPos;
+            }
+
             Manager.m_Animator = player.transform.GetChild(0).gameObject.GetComponent<Animator>();
         }
-        
+
     }
 
 
@@ -49,42 +76,23 @@ public class Movement : NetworkBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (Manager.player != null && Manager.camera != null)
         {
-            if (Manager.VRAplication)
-            {
-                Manager.camera.transform.position = new Vector3(Manager.player.transform.position.x, Manager.player.transform.position.y, Manager.player.transform.position.z);
-                Manager.player.transform.eulerAngles = new Vector3(Manager.player.transform.eulerAngles.x, Manager.cameraVR.transform.eulerAngles.y, Manager.player.transform.eulerAngles.z);
-            }
-            else
-            {
-                Manager.camera.transform.position = new Vector3(Manager.player.transform.position.x, Manager.player.transform.position.y + 2.1f, Manager.player.transform.position.z);
-                Manager.camera.transform.rotation = Manager.player.transform.rotation;
-            }
-            
-            
+            Manager.camera.transform.position = new Vector3(Manager.player.transform.position.x, Manager.player.transform.position.y + 2.1f, Manager.player.transform.position.z);
+            Manager.camera.transform.rotation = Manager.player.transform.rotation;
             Vector3 pos = Manager.player.transform.position;
-            Vector3 vetor;
-            if (Manager.VRAplication) {
-                 vetor = new Vector3(Manager.cameraVR.gameObject.transform.forward.x, 0, Manager.cameraVR.gameObject.transform.forward.z);
-
-            }
-            else
-            {
-                vetor = new Vector3(Manager.camera.transform.forward.x, 0, Manager.camera.transform.forward.z);
-
-            }
+            Vector3 vetor = new Vector3(Manager.camera.transform.forward.x, 0, Manager.camera.transform.forward.z);
             Manager.m_Animator.SetFloat("walk", 0);
             if (buttonHoldDown)
             {
                 if (paraFrente)
                 {
-                     Manager.m_Animator.SetFloat("walk", 1);
+                    Manager.m_Animator.SetFloat("walk", 1);
                     pos += vetor * speed * Time.deltaTime;
                     Manager.player.transform.position = pos;
 
                 }
                 else
                 {
-                     Manager.m_Animator.SetFloat("walk", 1);
+                    Manager.m_Animator.SetFloat("walk", 1);
                     pos -= vetor * speed * Time.deltaTime;
                     Manager.player.transform.position = pos;
 
@@ -94,70 +102,70 @@ public class Movement : NetworkBehaviour, IPointerDownHandler, IPointerUpHandler
             }
             //Verifica se é uma versao em Realidade virtual/Desktop
             //if (Manager.VRAplication)
-           // {
-                if (Input.GetKey("w"))
-                {
-                    Manager.m_Animator.SetFloat("walk", 1);
-                    pos += vetor * speed * Time.deltaTime;
-                    Manager.player.transform.position = pos;
-                }
-                if (Input.GetKey("s"))
-                {
-                    Manager.m_Animator.SetFloat("walk", 1);
-                    pos -= vetor * speed * Time.deltaTime;
-                    Manager.player.transform.position = pos;
-                }
-                if (Input.GetKey("d"))
-                {
-                    Manager.m_Animator.SetFloat("walk", 1);
-
-                    pos += Manager.camera.transform.right * speed * Time.deltaTime;
-                    Manager.player.transform.position = pos;
-                }
-                if (Input.GetKey("a"))
-                {
-                    Manager.m_Animator.SetFloat("walk", 1);
-                    //teste
-                    pos -= Manager.camera.transform.right * speed * Time.deltaTime;
-                    Manager.player.transform.position = pos;
-                }
-                float right = 0.0f;
-                float currentSpeed = speed;
-                if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-                {
-                    currentSpeed = shiftSpeed;
-                }
-
-                float forward = 0.0f;
-                float realTimeNow = Time.realtimeSinceStartup;
-                float deltaRealTime = realTimeNow - realTime;
-                realTime = realTimeNow;
-
-                Vector3 delta = new Vector3(right, 0.0f, forward) * currentSpeed * deltaRealTime;
-
-                Manager.player.transform.position += Manager.player.transform.TransformDirection(delta);
-
-                Vector3 mousePosition = Input.mousePosition;
-
-                if (Input.GetMouseButtonDown(1) /* right mouse */)
-                {
-                    startMousePosition = mousePosition;
-                    startEulerAngles = Manager.player.transform.localEulerAngles;
-
-                }
-
-                if (Input.GetMouseButton(1) /* right mouse */)
-                {
-                    Vector3 offset = mousePosition - startMousePosition;
-                    Manager.camera.transform.localEulerAngles = startEulerAngles + new Vector3(-offset.y * 360.0f / Screen.height, offset.x * 360.0f / Screen.width, 0.0f);
-                    Manager.player.transform.localEulerAngles = startEulerAngles + new Vector3(0.0f, offset.x * 360.0f / Screen.width, 0.0f);
+            // {
+            if (Input.GetKey("w"))
+            {
+                Manager.m_Animator.SetFloat("walk", 1);
+                pos += vetor * speed * Time.deltaTime;
+                Manager.player.transform.position = pos;
             }
-           // }
-           // else
-           // {
-                //Se nao uma versao em realidadeVirtual/Desktop entao é mobile
-              //  GyroModifyCamera();
-           // }
+            if (Input.GetKey("s"))
+            {
+                Manager.m_Animator.SetFloat("walk", 1);
+                pos -= vetor * speed * Time.deltaTime;
+                Manager.player.transform.position = pos;
+            }
+            if (Input.GetKey("d"))
+            {
+                Manager.m_Animator.SetFloat("walk", 1);
+
+                pos += Manager.camera.transform.right * speed * Time.deltaTime;
+                Manager.player.transform.position = pos;
+            }
+            if (Input.GetKey("a"))
+            {
+                Manager.m_Animator.SetFloat("walk", 1);
+                //teste
+                pos -= Manager.camera.transform.right * speed * Time.deltaTime;
+                Manager.player.transform.position = pos;
+            }
+            float right = 0.0f;
+            float currentSpeed = speed;
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
+                currentSpeed = shiftSpeed;
+            }
+
+            float forward = 0.0f;
+            float realTimeNow = Time.realtimeSinceStartup;
+            float deltaRealTime = realTimeNow - realTime;
+            realTime = realTimeNow;
+
+            Vector3 delta = new Vector3(right, 0.0f, forward) * currentSpeed * deltaRealTime;
+
+            Manager.player.transform.position += Manager.player.transform.TransformDirection(delta);
+
+            Vector3 mousePosition = Input.mousePosition;
+
+            if (Input.GetMouseButtonDown(1) /* right mouse */)
+            {
+                startMousePosition = mousePosition;
+                startEulerAngles = Manager.player.transform.localEulerAngles;
+
+            }
+
+            if (Input.GetMouseButton(1) /* right mouse */)
+            {
+                Vector3 offset = mousePosition - startMousePosition;
+                Manager.camera.transform.localEulerAngles = startEulerAngles + new Vector3(-offset.y * 360.0f / Screen.height, offset.x * 360.0f / Screen.width, 0.0f);
+                Manager.player.transform.localEulerAngles = startEulerAngles + new Vector3(0.0f, offset.x * 360.0f / Screen.width, 0.0f);
+            }
+            // }
+            // else
+            // {
+            //Se nao uma versao em realidadeVirtual/Desktop entao é mobile
+            //  GyroModifyCamera();
+            // }
         }
 
     }
