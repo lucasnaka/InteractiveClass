@@ -10,17 +10,28 @@ public class Manager : MonoBehaviour
     public static string name = "Client_Host";
     public static GameObject objetoRecebido;
     public static GameObject camera;
-    public static GameObject cameraVR;
     public static GameObject player;
     public static Animator m_Animator;
     static Text HudName;
-    public static bool VRAplication = true;
+    public static bool VRAplication = false;
     public static GameObject mobileHUD;
-    public static List<GameObject> playersInScene;
-    public static List<string> playersInfoInScene;
+    public static TCPServer serverTCP;
+    public static TCPClient clientTCP;
+
+    public static Dictionary<string, bool> objectsToCatch = new Dictionary<string, bool>();
+
+    public static void startServerTCP() {
+        serverTCP = new TCPServer();
+        serverTCP.setStart();
+    }
+
     void Start()
     {
-
+        objectsToCatch.Add("Extintor1", false);
+        objectsToCatch.Add("Extintor2", false);
+        objectsToCatch.Add("ChestKey", false);
+        objectsToCatch.Add("crowbarOld1", false);
+        objectsToCatch.Add("crowbarOld2", false);
     }
 
     // Update is called once per frame

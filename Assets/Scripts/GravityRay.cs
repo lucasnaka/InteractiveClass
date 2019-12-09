@@ -3,31 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+
 public class GravityRay : NetworkBehaviour
 {
     int reachRange = 100;
     public GameObject mao_direita;
-    public GameObject extintor1;
     public GameObject camera;
     public GameObject hitObject;
+
     [SyncVar]
-    public bool extintor1_pego = false;
+    public bool extintor1_pego;
+    [SyncVar]
+    public bool extintor2_pego;
+    [SyncVar]
+    public bool chave_pega;
+    [SyncVar]
+    public bool pe_cabra1_pego;
+    [SyncVar]
+    public bool pe_cabra2_pego;
 
-
-
-    Dictionary<string, bool> objectsToCatch = new Dictionary<string, bool>();
-
-    void Start() {
-        objectsToCatch.Add("Extintor1", false);
-        objectsToCatch.Add("Extintor2", false);
-        objectsToCatch.Add("ChestKey", false);
-        objectsToCatch.Add("crowbarOld1", false);
-        objectsToCatch.Add("crowbarOld2", false);
-        extintor1 = GameObject.FindGameObjectWithTag("Extintor1");
+    TCPServer serverTCP;
+    TCPClient clientTCP;
+    void Start()
+    {
         camera = GameObject.FindGameObjectWithTag("MainCamera");
+        extintor1_pego = false;
+        extintor2_pego = false;
+        chave_pega = false;
+        pe_cabra1_pego = false;
+        pe_cabra2_pego = false;
+
+        if (!isServer)
+        {
+            clientTCP = new TCPClient();
+           Manager.clientTCP = clientTCP;
+            clientTCP.setStart();
+
+        }
+        
+       
+            
+            
     }
 
-    public void RaybeamStart()
+    /*public void RaybeamStart()
     {
 
         RaycastHit hitInfo;
@@ -35,138 +54,138 @@ public class GravityRay : NetworkBehaviour
             if(objectsToCatch.ContainsKey(hitInfo.collider.gameObject.name))
             {
                 hitObject = hitInfo.collider.gameObject;
-                //hitObject.transform.parent = mao_direita.transform;
-               // hitObject.transform.localPosition = new Vector3(0, 0, 0);
+                hitObject.transform.parent = mao_direita.transform;
+                hitObject.transform.localPosition = new Vector3(0, 0, 0);
                 objectsToCatch[hitObject.name] = true;
-               
-
-
             }
         }
-    }
-    /* [Command]
-     void CmdClientToServer(string teste)
-     {
-         //if (isClient)
-         //{
-             print("CLient: peguei o extintor");
-             RpcTeste(teste);
-             RpcLigaObjetoMao("ExtintorMao", Manager.name);
-         // }
-     }
-
-
-     [ClientRpc]
-     void RpcTeste(string teste)
-     {
-        // if (isServer)
-        // {
-             extintor1_pego = true;
-
-             Manager.atualizaNome(teste);
-            // extintor1.SetActive(false);
-             //extintor1.SetActive(false);
-             print("Servidor: pegou o extintor");
-
-       //  }
-
-     }*/
+    }*/
 
     [Command] // roda no servidor
-    void CmdEscondeObjetoNoServidor(string tagObjeto, string PlayerName)
+    void CmdRaybeamStart()
     {
-        print("Client: peguei o " + tagObjeto+" - "+ PlayerName);
-        Manager.escondeObjeto(tagObjeto);
-        RpcLigaObjetoMao(tagObjeto, PlayerName);
-        
+        RpcRaybeamStart();
     }
-
 
     [ClientRpc] // roda nos clientes
-    void RpcLigaObjetoMao(string tagObjeto, string playerName)
+    void RpcRaybeamStart()
     {
-
-        if (isLocalPlayer)
+        RaycastHit hitInfo;
+        if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hitInfo, reachRange))
         {
-            Manager.escondeObjeto(tagObjeto);
-            GameObject[] clients = GameObject.FindGameObjectsWithTag("Player");
-            foreach (GameObject client in clients)
+            if (Manager.objectsToCatch.ContainsKey(hitInfo.collider.gameObject.name))
             {
-                PlayerInfo info = client.GetComponent<PlayerInfo>();
+                hitObject = hitInfo.collider.gameObject;
+                hitObject.transform.parent = mao_direita.transform;
+                hitObject.transform.localPosition = new Vector3(0, 0, 0);
+                Manager.objectsToCatch[hitObject.name] = true;
+                extintor1_pego = Manager.objectsToCatch["Extintor1"];
+                extintor2_pego = Manager.objectsToCatch["Extintor2"];
+                chave_pega = Manager.objectsToCatch["ChestKey"];
+                pe_cabra1_pego = Manager.objectsToCatch["crowbarOld1"];
+                pe_cabra2_pego = Manager.objectsToCatch["crowbarOld2"];
 
-                info.updateDisplayedName(info.PlayerName);
-
-
+                extintor1_pego = true;
+                updateInfo();
             }
-
-            //os objetos devem ter a tag assim Extintor_1
-            if (tagObjeto == "Extintor1" || tagObjeto == "Extintor2")
-                tagObjeto = "Extintor";
-           // GameObject[] objetos = GameObject.FindGameObjectsWithTag(tagObjeto + "Mao");
-
-            //mao_direita = objetos[objetos.Length-1].transform.GetChild(0).gameObject.SetActive(true);
-            //GameObject objeto = GameObject.FindGameObjectWithTag(tagObjeto + "Mao");
-            //mao_direita.transform.GetChild(0).gameObject.SetActive(true);
+            //if (hitInfo.collider.gameObject.name == "Extintor1")
+            //{
+            //    extintor1_pego = true;
+            //    Manager.objectsToCatch["Extintor1"] = true;
+            //    hitObject = hitInfo.collider.gameObject;
+            //    hitObject.transform.parent = mao_direita.transform;
+            //    hitObject.transform.localPosition = new Vector3(0, 0, 0);
+            //}
+            //else if (hitInfo.collider.gameObject.name == "Extintor2")
+            //{
+            //    extintor2_pego = true;
+            //}
+            //else if (hitInfo.collider.gameObject.name == "ChestKey")
+            //{
+            //    chave_pega = true;
+            //}
+            //else if (hitInfo.collider.gameObject.name == "crowbarOld1")
+            //{
+            //    pe_cabra1_pego = true;
+            //}
+            //else if (hitInfo.collider.gameObject.name == "crowbarOld2")
+            //{
+            //    pe_cabra2_pego = true;
+            //}
         }
-            
-        
-
-        
-           
-
-        
-       
     }
-    public GameObject objectCaught;
-    public static bool com_extintor1 = false;
-    public static bool com_extintor2 = false; 
-    public static bool com_chaveBau = false;
-    public static bool com_crowbarOld1 = false;
-    public static bool com_crowbarOld2 = false;
 
-    
+    public GameObject objectCaught;
 
     public GameObject[] objects;
+    public GameObject myLocalPlayer;
 
-    void Update(){
-        if(Input.GetKeyDown("space") || Input.GetMouseButtonDown(0))
+    public GameObject FindLocalNetworkPlayer()
+    {
+        NetworkManager networkManager = NetworkManager.singleton;
+        List<PlayerController> pc = networkManager.client.connection.playerControllers;
+
+        for (int i = 0; i < pc.Count; i++)
         {
-            //CmdClientToServer(Manager.name);
+            GameObject obj = pc[i].gameObject;
+            NetworkBehaviour netBev = obj.GetComponent<NetworkBehaviour>();
+
+            if (pc[i].IsValid && netBev != null && netBev.isLocalPlayer)
+            {
+                return pc[i].gameObject;
+            }
+        }
+        return null;
+    }
+
+    //Envia a informacao via TCP
+    void updateInfo() {
+        
+        string msg = "Extintor1=" + extintor1_pego + ";" + "Extintor2=" + extintor2_pego + ";" + "ChestKey=" + chave_pega + ";"
+                 + "crowbarOld1=" + pe_cabra1_pego + ";" + "crowbarOld2=" + pe_cabra2_pego;
+
+        if (isClient && !isServer)
+            Manager.clientTCP.SendMessage(msg);
+        else
+            Manager.serverTCP.SendMessage(msg);
+    }
+
+    void Update()
+    {
+        
+        if (Input.GetKeyDown("space") || Input.GetMouseButtonDown(0))
+        {
 
             if (mao_direita == null)
             {
-                objects = GameObject.FindGameObjectsWithTag("mao_direita");
-                mao_direita = objects[objects.Length - 1];
+                myLocalPlayer = FindLocalNetworkPlayer();
+                // Se trocar Player1 prefab por Player prefab, colocar a seguinte linha de comando:
+                // mao_direita = myLocalPlayer.transform.Find("IdleMan/mixamorig4:Hips/mixamorig4:Spine/mixamorig4:Spine1/mixamorig4:Spine2/mixamorig4:RightShoulder/mixamorig4:RightArm/mixamorig4:RightForeArm/mixamorig4:RightHand/mixamorig4:RightHandIndex1").gameObject;
+                mao_direita = myLocalPlayer.transform.Find("IdleMan (1)/mixamorig4:Hips/mixamorig4:Spine/mixamorig4:Spine1/mixamorig4:Spine2/mixamorig4:RightShoulder/mixamorig4:RightArm/mixamorig4:RightForeArm/mixamorig4:RightHand/mixamorig4:RightHandIndex1").gameObject;
             }
-            if (!objectsToCatch.ContainsValue(true))
+
+            if (!Manager.objectsToCatch.ContainsValue(true))
             {
-               
-                RaybeamStart();   
-                if(hitObject != null)
-                 CmdEscondeObjetoNoServidor(hitObject.tag, Manager.name);
-                
-                   
+                if (isServer)
+                    RpcRaybeamStart();
+                else
+                    CmdRaybeamStart();
             }
-                
+
             else
             {
                 string objectName = "";
-                foreach (string key in objectsToCatch.Keys)
+                foreach (string key in Manager.objectsToCatch.Keys)
                 {
-                    if(objectsToCatch[key] == true)
+                    if (Manager.objectsToCatch[key] == true)
                         objectName = key;
                 }
+
                 objectCaught = GameObject.Find(objectName);
-                objectsToCatch[objectName] = false;
+                Manager.objectsToCatch[objectName] = false;
                 objectCaught.transform.parent = null;
             }
         }
-
-        com_extintor1 = objectsToCatch["Extintor1"];
-        com_extintor2 = objectsToCatch["Extintor2"];
-        com_chaveBau = objectsToCatch["ChestKey"];
-        com_crowbarOld1 = objectsToCatch["crowbarOld1"];
-        com_crowbarOld2 = objectsToCatch["crowbarOld2"];
 
     }
 }
